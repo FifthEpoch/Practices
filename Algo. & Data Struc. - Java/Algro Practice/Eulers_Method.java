@@ -12,15 +12,24 @@ public class Eulers_Method {
 	static double stepSize = 0.3;
 	static double FinalX = 1.6;
 	
+	// input equation
+	static double equation = - 2 + (2 * x) + (4 * y);
 	
-	public static void main (String[] args) {
+	public static void eulersMethod(){
 		
 		for (int i = 0; i <= ((int)(FinalX - x) / stepSize) + 2; i++) {
 			
 			System.out.println("x = " + df.format(x) + ", y = " + df.format(y) + " , dydx =  " + df.format((- 2 + (2 * x) + (4 * y))));
 			
-			y = (- 2 + (2 * x) + (4 * y)) * stepSize + y;
+			y = equation * stepSize + y;
 			x += stepSize;
 		}
+	}
+	
+	
+	public static void main (String[] args) {
+		
+		eulersMethod();
+		
 	}	
 }

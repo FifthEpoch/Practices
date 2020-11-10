@@ -208,7 +208,7 @@ void iteration() { // called in timer
           cells_under[x][y] = 3;
         }
         if(cellsBuffer_under[x][y] == 3){
-          changes_under[x][y] ++;
+          changes_under[x][y]++;
         }
       } else { // no ghost
         changes_under[x][y] = 0;

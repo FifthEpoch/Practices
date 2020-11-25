@@ -1,6 +1,6 @@
 var testmsg = 'Hello, world.';
 var seedMatches = [];
-var debug = true;
+var debug = false;
 var imgData;
 
 document.addEventListener('DOMContentLoaded', init);
@@ -19,6 +19,7 @@ function load() {
         seedMatches.push(seedMatching(binStr, img_RGB));
     }
     printSeedMatches(testmsg, seedMatches);
+    compareCompressed();
 }
 
 function draw() {
@@ -35,33 +36,25 @@ function draw() {
 
 function seedMatching(binStr, RGB) {
 
-    if (debug) {
-        console.log('_SEED MATCHING_');
-    }
-
     var RGBLen = RGB.length;
 
     for (var i = 0; i < 1000000; i++) {
-
-        if (debug) {
-            console.log('i: ' + i);
-        }
 
         var randGen = new Math.seedrandom(i);
 
         for (var j = 0; j < binStr.length; j++) {
             let randIndex = Math.floor(RGBLen * randGen());
-            let pos0 = ("00000000" + RGB[randIndex].toString(2)).slice(-8).charAt(0);
-            if (debug) {
-                console.log('j: ' + j);
-                console.log('pos0 = ' + pos0);
-                console.log('binStr[j] = ' + binStr[j]);
-            }
+            let pos0 = MSB(RGB[randIndex]);
+
             if (pos0 !== binStr[j]) break;
         }
         if (j === binStr.length - 1) return i;
     }
     return 'no seed match';
+}
+
+function MSB(num) {
+    return ("00000000" + num.toString(2)).slice(-8).charAt(0);
 }
 
 function str_2_bin(str) {
@@ -79,6 +72,48 @@ function printSeedMatches(testmsg, seedMatches) {
             document.getElementById('h2').innerText + testmsg[i] + ' (' + str_2_bin(testmsg[i]) + '): ' + seedMatches[i] + '\n';
         console.log(testmsg[i] + ': ' + seedMatches[i]);
     }
+}
+
+function compareCompressed() {
+
+    var errors = [];
+    var compressed = document.getElementsByTagName("img");
+    console.log('print compressed' + compressed[0]);
+    console.log('print compressed' + compressed[1]);
+
+    for (var i = 0; i < compressed.length; i++) {
+
+        const cvs = document.getElementById('compressed');
+        cvs.width = cvs.height = 512;
+        const ctx = cvs.getContext( '2d' );
+        if (debug) {
+            console.log('compressed[i] => ' + compressed[i]);
+        }
+        ctx.drawImage(compressed[i], 0, 0);
+
+        let imgData_RGBA = ctx.getImageData(0, 0, 512, 512);
+        let imgData_RGB = RGBA_2_RGB(imgData_RGBA.data);
+        let OG_RGB = RGBA_2_RGB(imgData.data);
+
+        var counter = 0;
+        for (var j = 0; j < imgData_RGB.length; j++) {
+            if (MSB(OG_RGB[j]) !== MSB(imgData_RGB[j])){
+                counter++;
+            }
+        }
+        errors.push(counter);
+    }
+    document.getElementById('compression-test').innerText = printErrorRates(errors);
+}
+
+function printErrorRates(errors){
+    var str = '';
+    for (k = 0; k < errors.length; k++) {
+        str += '\ncompression quality metric = ' + (90 - (5 * k)) +
+            '\ntotal error: ' + errors[k] +
+            '\nerror rate: ' + Math.round(errors[k] / (512 * 512 * 3) * 100) + '%\n';
+    }
+    return str;
 }
 
 function RGBA_2_RGB(RGBA) {

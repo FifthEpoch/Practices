@@ -1,4 +1,4 @@
-# portfolio
+# Portfolio
 
 #### Little projects here and there. Some are from school, and some from the heart.
 

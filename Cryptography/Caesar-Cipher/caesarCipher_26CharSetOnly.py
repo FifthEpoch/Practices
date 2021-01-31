@@ -17,12 +17,12 @@ def decrypt(_ciph, _k):
         charcode = ord(i)
         if charcode > 64 and charcode < 91:
             charcode = ord(i) - _k
-            charcode = charcode if charcode >= 65 else charcode + 26
+            charcode = charcode if charcode > 64 else charcode + 26
         msg += chr(charcode)
     return msg
 
 def getMode():
-    return input("encrypt: -e / decrypt: -d: / help: -h / quit: -q: \n")
+    return input("encrypt: -e / decrypt: -d: / brute force: -bf / help: -h / quit: -q: \n")
 
 def getInput():
     usrInput = input("provide a text containing only english characters (numbers and punctuations will be ignored.):\n")
@@ -37,6 +37,18 @@ def getKey():
         except:
             print("error >> please provide a valid integer ")
     return key
+
+def bruteForce(_ciph):
+    for k in range(26):
+        guess = ""
+        for char in _ciph:
+            charcode = ord(char)
+            if charcode > 64 and charcode < 91:
+                charcode = charcode - k
+                charcode = charcode if charcode > 64 else charcode + 26
+            guess += chr(charcode)
+        print(">> %d" % k)
+        print(guess)
 
 def printRes(_in, _out, _k):
     print(">> result")
@@ -56,6 +68,9 @@ while True:
         key = getKey()
         msg  = decrypt(ciph, key)
         printRes(ciph, msg, key)
+    elif mode == "-bf":
+        ciph = getInput()
+        bruteForce(ciph)
     elif mode == "-h":
         print("* Caesar cipher is a method of encrypting alphabetic text \n"
               "  by shifting characters by N=key positions")

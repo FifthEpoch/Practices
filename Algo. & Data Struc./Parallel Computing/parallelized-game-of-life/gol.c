@@ -166,10 +166,6 @@ int main(int argc, char **argv) {
     ret = pthread_mutex_init(&mutex, NULL); //initialize the mutex
         if (ret) print_error("ERROR: pthread_mutex_init failed");
     
-    for (int i = 0; i < nthreads; i++) {
-        thread_args[i].thread_id = i;
-    }
-    
     int time_step = 0;
     while(time_step < 100) {
         // add frame to GIF

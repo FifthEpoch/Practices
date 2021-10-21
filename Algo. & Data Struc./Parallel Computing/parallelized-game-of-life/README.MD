@@ -15,7 +15,7 @@ $ ./gol_prog <n> <p> <d> <g>
 ```
 
 | Param  | Description |
-| ------:| -----------:|
+| -------| ------------|
 | n      | number of threads to spin up. |
 | p      | number of pixels per side. |
 | d      | initial population density in range 1 - 100 (percent). |

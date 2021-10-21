@@ -6,7 +6,7 @@ Pratice using pthread in C to compute new generations quicker!
 
 Compile with 
 ```
-$ gcc -Wall -g -v gol.c cgif.c -o gol_prog 
+$ gcc gol.c cgif.c -o gol_prog 
 ```
 
 Then, put in parameters 

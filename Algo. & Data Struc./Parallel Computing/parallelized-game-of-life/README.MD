@@ -14,9 +14,11 @@ Then, put in parameters
 $ ./gol_prog <n> <p> <d> <g>
 ```
 
-n is number of threads to spin up
-p is the number of pixels per side
-d is the initial population density in range 1 - 100 (percent)
-g is the number of generations to calculate
+| Param  | Description |
+| ------:| -----------:|
+| n      | number of threads to spin up. |
+| p      | number of pixels per side. |
+| d      | initial population density in range 1 - 100 (percent). |
+| g      | number of generations to calculate. |
 
 You will see gol.gif in the directory at the end. 
